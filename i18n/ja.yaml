@@ -41,6 +41,10 @@
 - id: search_placeholder
   translation: "検索..."
 
+# Profile widget
+- id: profile_title
+  translation: "プロフィール"
+
 # Languages widget
 - id: languages_title
   translation: "言語"

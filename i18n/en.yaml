@@ -41,6 +41,10 @@
 - id: search_placeholder
   translation: "SEARCH..."
 
+# Profile widget
+- id: profile_title
+  translation: "Profile"
+
 # Languages widget
 - id: languages_title
   translation: "Languages"

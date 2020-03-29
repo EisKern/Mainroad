@@ -130,7 +130,7 @@ textarea {
 	padding: 5px 10px;
 	font-weight: 700;
 	color: #fff;
-	white-space: pre-line;
+	/* white-space: pre-line; */
 	background: #2a2a2a;
 }
 
@@ -1096,7 +1096,7 @@ textarea {
 	display: inline-block;
 	margin: 0 4px 8px 0;
 	font-size: 12px;
-	text-transform: uppercase;
+	/* text-transform: uppercase; */
 }
 
 /* Languages Widget */
@@ -1132,8 +1132,9 @@ textarea {
 
 .footer__links {
 	-webkit-order: 1;
-	order: 1;
+    order: 0;
 }
+
 
 .footer a {
 	color: #fff;

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="no-js" lang="{{ .Site.LanguageCode | default "en-us" }}">
+<html class="no-js" lang="{{ with .Site.LanguageCode }}{{ . }}{{ else }}en{{ end }}">
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -7,24 +7,38 @@
 	<title>{{ block "title" . }}{{ if not .IsHome }}{{ .Title }} - {{ end }}{{ .Site.Title }}{{ end }}</title>
 	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
 	<meta name="description" content="{{ if .IsHome }}{{ .Site.Params.description }}{{ else }}{{ .Params.Description }}{{ end }}">
-	{{ if .Site.Params.opengraph }}{{ template "_internal/opengraph.html" . }}{{ end }}
-	{{ if .Site.Params.twitter_cards }}{{ template "_internal/twitter_cards.html" . }}{{ end }}
+    {{ if .Site.Params.opengraph }}
+        {{ template "_internal/opengraph.html" . }}
+    {{ end }}
+    {{ if .Site.Params.twitter_cards }}
+        {{ template "_internal/twitter_cards.html" . }}
+    {{ end }}
 	<link rel="dns-prefetch" href="//fonts.googleapis.com">
-	<link rel="dns-prefetch" href="//fonts.gstatic.com">
-	{{ with .OutputFormats.Get "rss" -}}
-	{{ printf `<link rel="%s" type="%s" href="%s" title="%s">` .Rel .MediaType.Type .RelPermalink $.Site.Title | safeHTML }}
-	{{ end -}}
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
-	{{ $style := resources.Get "css/style.css" | resources.ExecuteAsTemplate "css/style.css" . -}}
-	<link rel="stylesheet" href="{{ $style.RelPermalink }}">
-	{{ range .Site.Params.customCSS -}}
-	<link rel="stylesheet" href="{{ . | relURL }}">
-	{{- end }}
-	<link rel="shortcut icon" href="{{ "favicon.ico" | relURL }}">
-	{{- if not .Site.IsServer }}
+    <link rel="dns-prefetch" href="//fonts.gstatic.com">
+    <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
+    {{ with .OutputFormats.Get "rss" }}
+        {{ printf `<link rel="%s" type="%s" href="%s" title="%s">` .Rel .MediaType.Type .RelPermalink $.Site.Title | safeHTML }}
+	{{ end }}
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+
+	{{ $style := resources.Get "css/style.css" | resources.ExecuteAsTemplate "css/style.css" . }}
+    <link rel="stylesheet" href="{{ $style.RelPermalink }}">
+
+    {{ $style := resources.Get "css/custom.css" | resources.ExecuteAsTemplate "css/custom.css" . }}
+    <link rel="stylesheet" href="{{ $style.RelPermalink }}">
+
+    {{ range .Site.Params.customCSS }}
+        <link rel="stylesheet" href="{{ . | relURL }}">
+    {{ end }}
+
+    {{ $favicon := "favicon.ico" }}
+    <link rel="shortcut icon" href="{{ $favicon | relURL }}">
+
+	{{ if not .Site.IsServer }}
 		{{ template "_internal/google_analytics_async.html" . }}
-	{{- end }}
+	{{ end }}
 </head>
+
 <body class="body">
 	<div class="container container--outer">
 		{{ partial "header" . }}
@@ -32,20 +46,22 @@
 			<div class="primary">
 			{{ block "main" . }}
 				{{ with .Content }}
-				<div class="content main__content clearfix">
-					{{ . }}
-				</div>
+                    <div class="content main__content clearfix">{{ . }}</div>
 				{{ end }}
 			{{ end }}
 			</div>
 			{{ partial "sidebar.html" . }}
 		</div>
 		{{ partial "footer" . }}
-	</div>
-<script async defer src="{{ "js/menu.js" | relURL }}"></script>
-{{ range .Site.Params.customJS -}}
-<script src="{{ . | relURL }}"></script>
-{{- end }}
-{{- partial "mathjax.html" . -}}
+    </div>
+
+    {{ $js_path := "js/menu.js" }}
+    <script async defer src="{{ $js_path | relURL }}"></script>
+
+    {{ range .Site.Params.customJS -}}
+        <script src="{{ . | relURL }}"></script>
+    {{- end }}
+
+    {{ partial "mathjax.html" . }}
 </body>
 </html>
