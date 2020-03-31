@@ -24,9 +24,6 @@
 	{{ $style := resources.Get "css/style.css" | resources.ExecuteAsTemplate "css/style.css" . }}
     <link rel="stylesheet" href="{{ $style.RelPermalink }}">
 
-    {{ $style := resources.Get "css/custom.css" | resources.ExecuteAsTemplate "css/custom.css" . }}
-    <link rel="stylesheet" href="{{ $style.RelPermalink }}">
-
     {{ range .Site.Params.customCSS }}
         <link rel="stylesheet" href="{{ . | relURL }}">
     {{ end }}
